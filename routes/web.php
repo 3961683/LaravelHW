@@ -1,30 +1,22 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [HomeController::class, 'index'])
+# call index method of HomeController class
+Route::redirect('/', 'posts')
     ->name('index');
 
-Route::get('posts', [PostController::class, 'index'])
-    ->name('posts.index');
+Route::resource('posts', PostController::class)
+    ->except('index', 'show')
+    ->middleware('auth');
 
-Route::get('posts/create', [PostController::class, 'create'])
-    ->name('posts.create');
+Route::resource('posts', PostController::class)
+    ->only('index', 'show');
 
-Route::post('posts', [PostController::class, 'store'])
-    ->name('posts.store');
 
-Route::get('posts/{post}',[PostController::class, 'show'])
-    ->name('posts.show');
-
-Route::get('posts/{post}/edit', [PostController::class, 'edit'])
-    ->name('posts.edit');
-
-Route::put('posts/{post}',[PostController::class, 'update'])
-    ->name('posts.update');
-
-Route::delete('posts/{post}', [PostController::class, 'destroy'])
-    ->name('posts.delete');
+# this route is protected by Authentication middleware
+Route::get('secret', function () {
+    echo 'Top secret INFO!';
+})->middleware('auth');

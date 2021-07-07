@@ -1,19 +1,29 @@
-<h1>Posts</h1>
-<a href="{{route('posts.create')}}">Go to form</a>
+@extends('layouts.main')
 
-@if($posts->isNotEmpty())
-<ol>
+@section('content')
+    <h1>Posts</h1>
+    @can('create', App\Models\Post::class)
+        <a href="{{ route('posts.create') }}">Add post</a>
+    @endcan
+    <hr>
+    @if($posts->isNotEmpty())
 
-    @foreach($posts as $post)
-        <li value="{{$post->id}}">
-           <a href="{{ route('posts.show', $post) }}">
-               {{$post->title}}
-           </a>
-        </li>
-    @endforeach
-</ol>
-@else
+        <ol>
+            @foreach($posts as $post)
+                <li value="{{ $post->id }}">
+                    <a href="{{ route('posts.show', $post) }}">
+                        {{ $post->title }}
+                    </a>
+                    <small>
+                        {{ $post->user->name }}
+                    </small>
+                </li>
+            @endforeach
+        </ol>
 
-
-    <h1>Nothing new here, come later ;)</h1>
-@endif
+    @else
+        <div>
+            There are no posts! Come back later 🙂
+        </div>
+    @endif
+@endsection

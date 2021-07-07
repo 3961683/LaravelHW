@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     function index() {
+        /*$post = Post::query()
+            ->create([
+                'title' => 'First post',
+                'content' => 'Some content'
+            ]);
+
+        dd($post); // dump and die will show the info and die
+        */
+
         return view('index');
     }
+
+
 }

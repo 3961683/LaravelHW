@@ -1,35 +1,35 @@
+@extends('layouts.main')
+
+@section('content')
 <?php
 $post = $post ?? null;
 ?>
 
+<h1>@if($post) Edit @else New @endif post</h1>
 
-<h1>@if($post) Edit post @else Create post @endif</h1>
-
-<form action="{{$post ? route('posts.update', $post) : route('posts.store') }}" method="post">
+<form action="{{ $post ? route('posts.update', $post) : route('posts.store') }}" method="post">
     @csrf
 
-    @if($post)
+    @if($post) <!-- Doing this because form doesn't support PUT method -->
         @method('put')
     @endif
 
     <div>
-        <label>Header</label>
-    </div>
-    <div>
-        <input value="{{ old('title', $post->title ?? null) }}" type="text" name="title" id="title" required autofocus />
+        <label for="title">Title:</label>
+        <input value="{{ old('title', $post->title ?? null) }}" type="text" id="title" name="title" required autofocus/>
+        <!-- old function returns old data when page reloaded -->
         @error('title')
-            <span>{{$message}}</span>
+        <span style="color:red;">{{ $message }}</span>
         @enderror
     </div>
     <div>
-        <label for="content">Post</label>
-    </div>
-    <div>
-        <textarea name="content" id="content" required>{{ old('content',$post->content ?? null) }}</textarea>
+        <label for="content">Content:</label>
+        <textarea name="content" id="content" required>{{ old('content', $post->content ?? null) }}</textarea>
         @error('content')
-        <span>{{$message}}</span>
+        <span style="color:red;">{{ $message }}</span>
         @enderror
     </div>
 
-    <button>@if($post) Edit post @else Create post @endif</button>
+    <button>@if($post) Edit @else Create @endif</button>
 </form>
+@endsection
