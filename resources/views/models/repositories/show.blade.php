@@ -10,7 +10,7 @@
 
 <a href="{{route('repositories.edit', $repository)}}">Edit post</a>
 
-<form action="{{route('repositories.delete', $repository)}}" method="post">
+<form action="{{route('repositories.destroy', $repository)}}" method="post">
     @csrf
     @method('delete')
 
